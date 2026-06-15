@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap");
 
 * {
   margin: 0;
@@ -6,16 +6,23 @@
   box-sizing: border-box;
 }
 
-:root {
-  --bg-main: #f2e5d7;
-  --bg-surface: #ffffff;
+/* 1. Light Mode Styles (Bind explicitly to html without data-theme or default) */
+html, :root {
+  /* ── Cleaned up background harmony ── */
+  --bg-main: #f9f6f0;          /* A slightly cleaner, milkier off-white/cream */
+  --bg-surface: #ffffff;       /* Pure white for cards & header */
+  
   --border-color: #000000;
   --text-primary: #000000;
-  --text-secondary: #333333;
-  --accent: #3a7ca5;
-  --danger: #ff4e88;
+  --text-secondary: #4a4a4a;   /* Slightly softer grey for descriptions */
+  
+  /* ── Saturated, high-contrast light mode accents ── */
+  --accent: #3a7ca5;           /* Your signature classic blue */
+  --success: #3ddc84;          /* Upgraded: A punchy, bright Android-style green */
+  --danger: #ff4e88;           /* Your brilliant electric pink */
   --danger-hover: #e0356f;
-  --success: #eef1bd;
+  
+  /* Structural variables stay exactly the same */
   --comic-border: 4px solid #000000;
   --comic-border-sm: 2px solid #000000;
   --shadow-lg: 8px 8px 0px #000000;
@@ -23,8 +30,21 @@
   --shadow-sm: 2px 2px 0px #000000;
 }
 
+/* 2. Dark Mode Styles (Force higher specificity using html[data-theme="dark"]) */
+html[data-theme="dark"] {
+  --bg-main: #121214;
+  --bg-surface: #1e1e24;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --accent: #00f5d4;         
+  --success: #00ff66;          
+  --danger: #ff007f;          
+  --danger-hover: #ff0055;
+  
+}
+
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background: var(--bg-main);
   color: var(--text-primary);
   min-height: 100vh;
@@ -34,7 +54,7 @@ body {
 
 /* ── Nav ── */
 .header {
-  background: #ffffff;
+  background: var(--bg-surface);
   padding: 16px 40px;
   display: flex;
   justify-content: space-between;
@@ -48,7 +68,7 @@ body {
 .logo {
   font-size: 1.4rem;
   font-weight: 900;
-  color: var(--text-primary);
+  color: var(--text-primary); /* Ensures it flips from solid black to solid white */
   text-transform: uppercase;
   letter-spacing: -0.5px;
   cursor: pointer;
@@ -85,13 +105,15 @@ body {
   padding: 8px 16px;
   border: var(--comic-border-sm);
   border-radius: 4px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 800;
   font-size: 0.85rem;
   text-transform: uppercase;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
 }
 
 .btn:hover {
@@ -121,7 +143,7 @@ body {
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -177,7 +199,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
 }
 
 .post-card:hover {
@@ -303,13 +327,13 @@ body {
 
 .input {
   width: 100%;
-  background: #ffffff;
+  background: var(--bg-main);
   border: var(--comic-border-sm);
   color: var(--text-primary);
   padding: 12px 16px;
   border-radius: 4px;
   font-size: 0.95rem;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 600;
   outline: none;
   transition: border 0.1s ease;
@@ -368,7 +392,9 @@ body {
   color: var(--text-secondary);
 }
 
-.status.error { color: var(--danger); }
+.status.error {
+  color: var(--danger);
+}
 
 .empty-state {
   text-align: center;
@@ -391,8 +417,17 @@ body {
 
 /* ── Mobile ── */
 @media (max-width: 640px) {
-  .header { padding: 14px 20px; }
-  .app-container { margin: 24px auto; padding: 0 16px; }
-  .post-card { padding: 20px; }
-  .article-header h1 { font-size: 1.85rem; }
+  .header {
+    padding: 14px 20px;
+  }
+  .app-container {
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+  .post-card {
+    padding: 20px;
+  }
+  .article-header h1 {
+    font-size: 1.85rem;
+  }
 }
