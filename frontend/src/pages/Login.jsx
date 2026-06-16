@@ -1,5 +1,7 @@
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import API_URL from '../api'
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState('')
@@ -12,7 +14,7 @@ function Login({ onLogin }) {
     form.append('username', username)
     form.append('password', password)
     try {
-      const res = await fetch('http://localhost:8000/login', { method: 'POST', body: form })
+      const res = await fetch(`${API_URL}/login`, { method: 'POST', body: form })
       if (!res.ok) throw new Error('Invalid credentials')
       const data = await res.json()
       localStorage.setItem('token', data.access_token)

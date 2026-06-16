@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import API_URL from '../api'
 
 function Home() {
   const [posts, setPosts] = useState([])
@@ -8,7 +9,7 @@ function Home() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('http://localhost:8000/posts')
+    fetch(`${API_URL}/posts`)
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch')
         return res.json()

@@ -1,5 +1,7 @@
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import API_URL from '../api'
 
 function CreatePost() {
   const [title, setTitle] = useState('')
@@ -14,7 +16,7 @@ function CreatePost() {
     setError('')
     const token = localStorage.getItem('token')
     try {
-      const res = await fetch('http://localhost:8000/posts', {
+      const res = await fetch(`${API_URL}/posts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ title, content }),

@@ -1,5 +1,7 @@
+
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import API_URL from '../api'
 
 function Post() {
   const { id } = useParams()
@@ -9,7 +11,7 @@ function Post() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetch(`http://localhost:8000/posts/${id}`)
+    fetch(`${API_URL}/posts/${id}`)
       .then(res => {
         if (!res.ok) throw new Error('Post not found')
         return res.json()
