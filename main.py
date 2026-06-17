@@ -8,10 +8,15 @@ from auth import create_access_token, get_current_user
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 import os
+import redis
+import json
 
 # Base.metadata.create_all(bind=engine)  # handled by Alembic
 
 app = FastAPI()
+
+# conneting to reddis
+redis_client = redis.Redis(host="localhost", port=6379, db=0, decode_responses=True)
 
 # CORS configuration
 
@@ -92,9 +97,29 @@ def get_posts(
     limit: int = 20,
     db: Session = Depends(get_db),
 ):
-    return (
+    cache_key = f"posts:{skip}:{limit}"
+
+    cached = redis_client.get(cache_key)
+    if cached:
+        return json.loads(cached)
+
+    posts = (
         db.query(Post).order_by(Post.created_at.desc()).offset(skip).limit(limit).all()
     )
+
+    posts_data = [
+        {
+            "id": p.id,
+            "title": p.title,
+            "content": p.content,
+            "created_at": p.created_at.isoformat() if p.created_at else None,
+            "user_id": p.user_id,
+        }
+        for p in posts
+    ]
+    redis_client.setex(cache_key, 300, json.dumps(posts_data))
+
+    return posts
 
 
 @app.get("/posts/{post_id}", response_model=PostResponse)
@@ -113,11 +138,7 @@ def get_post(
     return post
 
 
-@app.post(
-    "/posts",
-    response_model=PostResponse,
-    status_code=status.HTTP_201_CREATED,
-)
+@app.post("/posts", response_model=PostResponse, status_code=status.HTTP_201_CREATED)
 def create_post(
     post: PostCreate,
     db: Session = Depends(get_db),
@@ -128,10 +149,13 @@ def create_post(
         content=post.content,
         user_id=current_user.id,
     )
-
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
+
+    # invalidate cache so next GET fetches fresh data
+    for key in redis_client.scan_iter("posts:*"):
+        redis_client.delete(key)
 
     return new_post
 
