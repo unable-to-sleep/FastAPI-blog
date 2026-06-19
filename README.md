@@ -61,13 +61,3 @@ The frontend dev server (Vite) typically runs at http://localhost:5173 — check
 FastAPI provides interactive API docs by default:
 - Swagger UI: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc
-
-## Running tests
-Add instructions here if the repository contains tests, e.g.:
-- pytest
-
-## Contributing
-Contributions are welcome. Please open an issue or submit a pull request describing your change.
-
-## License
-Add license information here if applicable.
