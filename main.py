@@ -14,7 +14,7 @@ import json
 # Base.metadata.create_all(bind=engine)  # handled by Alembic
 
 app = FastAPI()
-redis_url - os.getenv("REDIS_URL")
+redis_url = os.getenv("REDIS_URL")
 
 # conneting to reddis
 redis_client = redis.from_url(redis_url, decode_responses=True)
