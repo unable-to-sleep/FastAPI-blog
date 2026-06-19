@@ -14,9 +14,10 @@ import json
 # Base.metadata.create_all(bind=engine)  # handled by Alembic
 
 app = FastAPI()
+redis_url - os.getenv("REDIS_URL")
 
 # conneting to reddis
-redis_client = redis.Redis(host="localhost", port=6379, db=0, decode_responses=True)
+redis_client = redis.from_url(redis_url, decode_responses=True)
 
 # CORS configuration
 
